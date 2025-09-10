@@ -99,7 +99,7 @@ local teleportLocations = {
     ["Gears"] = Vector3.new(-286, 2.9, -13),
 }
 
--- Teleport Dropdown (one-time teleport)
+-- Teleport Dropdown
 MainTab:CreateDropdown({
     Name = "Teleport Shop",
     Options = {"Seeds","Gears"},
@@ -116,6 +116,10 @@ MainTab:CreateDropdown({
         end
     end,
 })
+
+-- Create Misc tab for future auto features
+local MiscTab = Window:CreateTab("Misc", nil)
+local MiscSection = MiscTab:CreateSection("Automation")
 
 -- Toggle for future auto-plant/sell
 MiscTab:CreateToggle({
