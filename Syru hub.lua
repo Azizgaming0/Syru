@@ -32,6 +32,9 @@ local Window = Rayfield:CreateWindow({
     }
 })
 
+local Player = game.Players.LocalPlayer
+local UserInputService = game:GetService("UserInputService")
+
 local MainTab = Window:CreateTab("Main", nil)
 local MainSection = MainTab:CreateSection("Main")
 
@@ -47,15 +50,12 @@ Rayfield:Notify({
 
 -- Infinite Jump toggle
 local infiniteJumpEnabled = false
-local Player = game.Players.LocalPlayer
-local UserInputService = game:GetService("UserInputService")
 local jumpConnection
 
 MainTab:CreateButton({
     Name = "Toggle Infinite Jump",
     Callback = function()
         infiniteJumpEnabled = not infiniteJumpEnabled
-
         if infiniteJumpEnabled then
             jumpConnection = UserInputService.JumpRequest:Connect(function()
                 local char = Player.Character
@@ -79,18 +79,18 @@ MainTab:CreateButton({
 
 -- WalkSpeed Slider
 MainTab:CreateSlider({
-   Name = "Walk Speed",
-   Range = {0, 300},
-   Increment = 1,
-   Suffix = "Speed",
-   CurrentValue = 20,
-   Flag = "WalkSpeed",
-   Callback = function(Value)
+    Name = "Walk Speed",
+    Range = {0, 300},
+    Increment = 1,
+    Suffix = "Speed",
+    CurrentValue = 20,
+    Flag = "WalkSpeed",
+    Callback = function(Value)
         local char = Player.Character
         if char and char:FindFirstChildOfClass("Humanoid") then
             char.Humanoid.WalkSpeed = Value
         end
-   end,
+    end,
 })
 
 -- Teleport locations
@@ -99,7 +99,7 @@ local teleportLocations = {
     ["Gears"] = Vector3.new(-286, 2.9, -13),
 }
 
--- Teleport Dropdown
+-- Teleport Dropdown (one-time teleport)
 MainTab:CreateDropdown({
     Name = "Teleport Shop",
     Options = {"Seeds","Gears"},
@@ -109,12 +109,21 @@ MainTab:CreateDropdown({
     Callback = function(Option)
         local char = Player.Character or Player.CharacterAdded:Wait()
         local hrp = char:WaitForChild("HumanoidRootPart")
-        local coords = teleportLocations[tostring(Option)]
+        local coords = teleportLocations[Option]
         if coords then
             hrp.CFrame = CFrame.new(coords)
-            print("Teleported to " .. Option .. " at:", coords)
-        else
-            warn("No teleport coordinates found for:", Option)
+            print("Teleported to " .. Option)
         end
-    end
+    end,
+})
+
+-- Toggle for future auto-plant/sell
+MiscTab:CreateToggle({
+   Name = "Auto Plant / Sell",
+   CurrentValue = false,
+   Flag = "AutoToggle",
+   Callback = function(Value)
+       print("Auto planting/selling:", Value)
+       -- later: add your auto plant / sell code here
+   end,
 })
