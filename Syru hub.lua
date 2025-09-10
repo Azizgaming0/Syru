@@ -88,20 +88,17 @@ local Dropdown = MainTab:CreateDropdown({
     Name = "Teleport Shop",
     Options = {"Seeds","Gears"},
     CurrentOption = {"Seeds"},
-    MultipleOptions = false, -- only one shop at a time
+    MultipleOptions = false,
     Flag = "TeleportShop",
     Callback = function(Option)
         local plr = game.Players.LocalPlayer
-        local char = plr.Character
-        if not char then return end
-
-        local hrp = char:FindFirstChild("HumanoidRootPart")
-        if not hrp then return end
+        local char = plr.Character or plr.CharacterAdded:Wait()
+        local hrp = char:WaitForChild("HumanoidRootPart")
 
         if Option == "Seeds" then
-            hrp.CFrame = CFrame.new(100,5,200) -- coordinates for Seeds shop
+            hrp.CFrame = CFrame.new(50, 5, 30) -- put correct coords here
         elseif Option == "Gears" then
-            hrp.CFrame = CFrame.new(300,5,400) -- coordinates for Gears shop
+            hrp.CFrame = CFrame.new(90, 5, 10) -- put correct coords here
         end
     end
 })
