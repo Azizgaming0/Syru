@@ -21,15 +21,15 @@ local Window = Rayfield:CreateWindow({
         RememberJoins = true
     },
     KeySystem = true,
-KeySettings = {
-    Title = "grow a garden key",
-    Subtitle = "link in discord server",
-    Note = "join the server from misc tab",
-    FileName = "Syru hub key",
-    SaveKey = true,
-    GrabKeyFromSite = true,
-    Key = {"https://pastebin.com/raw/xTh1piDh"} -- manually put your key here
-        }
+    KeySettings = {
+        Title = "grow a garden key",
+        Subtitle = "link in discord server",
+        Note = "join the server from misc tab",
+        FileName = "Syru hub key",
+        SaveKey = true,
+        GrabKeyFromSite = true,
+        Key = {"https://pastebin.com/raw/xTh1piDh"} -- manually put your key here
+    }
 })
 
 local MainTab = Window:CreateTab("Main", nil)
@@ -52,6 +52,7 @@ Rayfield:Notify({
     }
 })
 
+-- Infinite Jump Button
 local Button = MainTab:CreateButton({
     Name = "Infinite Jump",
     Callback = function()
@@ -72,18 +73,28 @@ local Button = MainTab:CreateButton({
     end
 })
 
+-- WalkSpeed Slider
 local Slider = MainTab:CreateSlider({
    Name = "Walk Speed",
    Range = {0, 300},
    Increment = 1,
    Suffix = "Speed",
    CurrentValue = 20,
-   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Slider1",
    Callback = function(Value)
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
    end,
 })
 
+-- Teleport Locations Table
+local teleportLocations = {
+    ["Seeds"] = Vector3.new(88, 2.9, -26),
+    ["Gears"] = Vector3.new(-286, 2.9, -13),
+    -- just add more here like:
+    -- ["Tools"] = Vector3.new(X, Y, Z),
+}
+
+-- Teleport Dropdown
 local Dropdown = MainTab:CreateDropdown({
     Name = "Teleport Shop",
     Options = {"Seeds","Gears"},
@@ -95,10 +106,12 @@ local Dropdown = MainTab:CreateDropdown({
         local char = plr.Character or plr.CharacterAdded:Wait()
         local hrp = char:WaitForChild("HumanoidRootPart")
 
-        if Option == "Seeds" then
-            hrp.CFrame = CFrame.new(50, 5, 30) -- put correct coords here
-        elseif Option == "Gears" then
-            hrp.CFrame = CFrame.new(90, 5, 10) -- put correct coords here
+        local coords = teleportLocations[Option]
+        if coords then
+            hrp.CFrame = CFrame.new(coords)
+            print("Teleported to " .. Option .. " at:", coords)
+        else
+            warn("No teleport coords found for:", Option)
         end
     end
 })
