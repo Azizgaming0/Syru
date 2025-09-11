@@ -131,3 +131,27 @@ MainTab:CreateToggle({
         -- later: put auto code here
     end,
 })
+
+local AutoTab = Window:CreateTab("Auto-farm", nil) -- Title, Image
+local AutoSection = AutoTab:CreateSection("Farm Features")
+
+-- Example toggle for autofarm
+AutoTab:CreateToggle({
+    Name = "Auto Plant",
+    CurrentValue = false,
+    Flag = "AutoPlant",
+    Callback = function(Value)
+        print("Auto Planting:", Value)
+        -- later: add planting code here
+    end,
+})
+
+AutoTab:CreateToggle({
+    Name = "Auto Sell",
+    CurrentValue = false,
+    Flag = "AutoSell",
+    Callback = function(Value)
+        print("Auto Selling:", Value)
+        -- later: add selling code here
+    end,
+})
