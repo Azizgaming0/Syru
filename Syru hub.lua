@@ -96,33 +96,69 @@ MainTab:CreateSlider({
     end,
 })
 
--- // Teleport Locations
-local teleportLocations = {
-    ["Seeds"] = Vector3.new(88, 2.9, -26),
-    ["Gears"] = Vector3.new(-286, 2.9, -13),
-}
-
--- // Teleport Dropdown
-MainTab:CreateDropdown({
-    Name = "Teleport Shop",
-    Options = {"Seeds", "Gears"},
-    CurrentOption = {"Seeds"},
-    MultipleOptions = false,
-    Flag = "TeleportShop",
-    Callback = function(Option)
-        local choice = Option[1] or Option -- FIX: Rayfield sends table
+-- Teleport Buttons
+MainTab:CreateButton({
+    Name = "Teleport to Seeds Shop",
+    Callback = function()
         local char = Player.Character or Player.CharacterAdded:Wait()
         local hrp = char:WaitForChild("HumanoidRootPart")
-        local coords = teleportLocations[choice]
-        if coords then
-            hrp.CFrame = CFrame.new(coords)
+        hrp.CFrame = CFrame.new(88, 2.9, -26)
+        Rayfield:Notify({
+            Title = "Teleport",
+            Content = "Teleported to Seeds Shop",
+            Duration = 3
+        })
+    end
+})
+
+MainTab:CreateButton({
+    Name = "Teleport to Gears Shop",
+    Callback = function()
+        local char = Player.Character or Player.CharacterAdded:Wait()
+        local hrp = char:WaitForChild("HumanoidRootPart")
+        hrp.CFrame = CFrame.new(-286, 2.9, -13)
+        Rayfield:Notify({
+            Title = "Teleport",
+            Content = "Teleported to Gears Shop",
+            Duration = 3
+        })
+    end
+})
+
+-- Infinite Jump Button (toggle with indicator)
+local infiniteJumpEnabled = false
+local jumpConnection
+
+MainTab:CreateButton({
+    Name = "Toggle Infinite Jump",
+    Callback = function()
+        infiniteJumpEnabled = not infiniteJumpEnabled
+
+        if infiniteJumpEnabled then
+            jumpConnection = UserInputService.JumpRequest:Connect(function()
+                local char = Player.Character
+                if char then
+                    local humanoid = char:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                    end
+                end
+            end)
             Rayfield:Notify({
-                Title = "Teleport",
-                Content = "Teleported to " .. choice,
+                Title = "Infinite Jump",
+                Content = "Enabled",
                 Duration = 3
             })
         else
-            warn("No teleport coords for: " .. tostring(choice))
+            if jumpConnection then
+                jumpConnection:Disconnect()
+                jumpConnection = nil
+            end
+            Rayfield:Notify({
+                Title = "Infinite Jump",
+                Content = "Disabled",
+                Duration = 3
+            })
         end
-    end,
+    end
 })
