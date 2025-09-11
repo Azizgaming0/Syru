@@ -41,16 +41,23 @@ Rayfield:Notify({
     Title = "Script executed",
     Content = "Thanks for using Syru Hub!",
     Duration = 4,
+    Actions = {
+        yes = {Name = "Yes!", Callback = function() print("Yes clicked") end},
+        no = {Name = "No!", Callback = function() print("No clicked") end}
+    }
 })
 
--- // Infinite Jump Button (toggle)
+-- Infinite Jump Toggle
 local infiniteJumpEnabled = false
 local jumpConnection
 
-MainTab:CreateButton({
-    Name = "Toggle Infinite Jump",
-    Callback = function()
-        infiniteJumpEnabled = not infiniteJumpEnabled
+MainTab:CreateToggle({
+    Name = "Infinite Jump",
+    CurrentValue = false, -- starts OFF
+    Flag = "InfiniteJumpToggle",
+    Callback = function(Value)
+        infiniteJumpEnabled = Value
+
         if infiniteJumpEnabled then
             jumpConnection = UserInputService.JumpRequest:Connect(function()
                 local char = Player.Character
@@ -61,26 +68,18 @@ MainTab:CreateButton({
                     end
                 end
             end)
-            Rayfield:Notify({
-                Title = "Infinite Jump",
-                Content = "Enabled!",
-                Duration = 3
-            })
+            print("Infinite Jump Enabled")
         else
             if jumpConnection then
                 jumpConnection:Disconnect()
                 jumpConnection = nil
             end
-            Rayfield:Notify({
-                Title = "Infinite Jump",
-                Content = "Disabled!",
-                Duration = 3
-            })
+            print("Infinite Jump Disabled")
         end
-    end
+    end,
 })
 
--- // WalkSpeed Slider
+-- WalkSpeed Slider
 MainTab:CreateSlider({
     Name = "Walk Speed",
     Range = {0, 300},
@@ -96,69 +95,39 @@ MainTab:CreateSlider({
     end,
 })
 
--- Teleport Buttons
-MainTab:CreateButton({
-    Name = "Teleport to Seeds Shop",
-    Callback = function()
+-- Teleport locations
+local teleportLocations = {
+    ["Seeds"] = Vector3.new(88, 2.9, -26),
+    ["Gears"] = Vector3.new(-286, 2.9, -13),
+}
+
+-- Teleport Dropdown
+MainTab:CreateDropdown({
+    Name = "Teleport Shop",
+    Options = {"Seeds","Gears"},
+    CurrentOption = {"Seeds"},
+    MultipleOptions = false,
+    Flag = "TeleportShop",
+    Callback = function(Option)
         local char = Player.Character or Player.CharacterAdded:Wait()
         local hrp = char:WaitForChild("HumanoidRootPart")
-        hrp.CFrame = CFrame.new(88, 2.9, -26)
-        Rayfield:Notify({
-            Title = "Teleport",
-            Content = "Teleported to Seeds Shop",
-            Duration = 3
-        })
-    end
-})
-
-MainTab:CreateButton({
-    Name = "Teleport to Gears Shop",
-    Callback = function()
-        local char = Player.Character or Player.CharacterAdded:Wait()
-        local hrp = char:WaitForChild("HumanoidRootPart")
-        hrp.CFrame = CFrame.new(-286, 2.9, -13)
-        Rayfield:Notify({
-            Title = "Teleport",
-            Content = "Teleported to Gears Shop",
-            Duration = 3
-        })
-    end
-})
-
--- Infinite Jump Button (toggle with indicator)
-local infiniteJumpEnabled = false
-local jumpConnection
-
-MainTab:CreateButton({
-    Name = "Toggle Infinite Jump",
-    Callback = function()
-        infiniteJumpEnabled = not infiniteJumpEnabled
-
-        if infiniteJumpEnabled then
-            jumpConnection = UserInputService.JumpRequest:Connect(function()
-                local char = Player.Character
-                if char then
-                    local humanoid = char:FindFirstChildOfClass("Humanoid")
-                    if humanoid then
-                        humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-                    end
-                end
-            end)
-            Rayfield:Notify({
-                Title = "Infinite Jump",
-                Content = "Enabled",
-                Duration = 3
-            })
+        local coords = teleportLocations[Option]
+        if coords then
+            hrp.CFrame = CFrame.new(coords)
+            print("Teleported to " .. Option)
         else
-            if jumpConnection then
-                jumpConnection:Disconnect()
-                jumpConnection = nil
-            end
-            Rayfield:Notify({
-                Title = "Infinite Jump",
-                Content = "Disabled",
-                Duration = 3
-            })
+            warn("No teleport coordinates for: " .. Option)
         end
-    end
+    end,
+})
+
+-- Placeholder Toggle for later features
+MainTab:CreateToggle({
+    Name = "Auto Plant / Sell",
+    CurrentValue = false,
+    Flag = "AutoToggle",
+    Callback = function(Value)
+        print("Auto Plant/Sell:", Value)
+        -- later: put auto code here
+    end,
 })
