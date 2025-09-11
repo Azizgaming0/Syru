@@ -36,19 +36,14 @@ local Player = game.Players.LocalPlayer
 local UserInputService = game:GetService("UserInputService")
 
 local MainTab = Window:CreateTab("Main", nil)
-local MainSection = MainTab:CreateSection("Main")
 
 Rayfield:Notify({
     Title = "Script executed",
     Content = "Thanks for using Syru Hub!",
     Duration = 4,
-    Actions = {
-        yes = {Name = "Yes!", Callback = function() print("Yes clicked") end},
-        no = {Name = "No!", Callback = function() print("No clicked") end}
-    }
 })
 
--- Infinite Jump toggle
+-- // Infinite Jump Button (toggle)
 local infiniteJumpEnabled = false
 local jumpConnection
 
@@ -66,18 +61,26 @@ MainTab:CreateButton({
                     end
                 end
             end)
-            print("Infinite Jump Enabled!")
+            Rayfield:Notify({
+                Title = "Infinite Jump",
+                Content = "Enabled!",
+                Duration = 3
+            })
         else
             if jumpConnection then
                 jumpConnection:Disconnect()
                 jumpConnection = nil
             end
-            print("Infinite Jump Disabled!")
+            Rayfield:Notify({
+                Title = "Infinite Jump",
+                Content = "Disabled!",
+                Duration = 3
+            })
         end
     end
 })
 
--- WalkSpeed Slider
+-- // WalkSpeed Slider
 MainTab:CreateSlider({
     Name = "Walk Speed",
     Range = {0, 300},
@@ -93,41 +96,33 @@ MainTab:CreateSlider({
     end,
 })
 
--- Teleport locations
+-- // Teleport Locations
 local teleportLocations = {
     ["Seeds"] = Vector3.new(88, 2.9, -26),
     ["Gears"] = Vector3.new(-286, 2.9, -13),
 }
 
--- Teleport Dropdown
+-- // Teleport Dropdown
 MainTab:CreateDropdown({
     Name = "Teleport Shop",
-    Options = {"Seeds","Gears"},
+    Options = {"Seeds", "Gears"},
     CurrentOption = {"Seeds"},
     MultipleOptions = false,
     Flag = "TeleportShop",
     Callback = function(Option)
+        local choice = Option[1] or Option -- FIX: Rayfield sends table
         local char = Player.Character or Player.CharacterAdded:Wait()
         local hrp = char:WaitForChild("HumanoidRootPart")
-        local coords = teleportLocations[Option]
+        local coords = teleportLocations[choice]
         if coords then
             hrp.CFrame = CFrame.new(coords)
-            print("Teleported to " .. Option)
+            Rayfield:Notify({
+                Title = "Teleport",
+                Content = "Teleported to " .. choice,
+                Duration = 3
+            })
+        else
+            warn("No teleport coords for: " .. tostring(choice))
         end
     end,
-})
-
--- Create Misc tab for future auto features
-local MiscTab = Window:CreateTab("Misc", nil)
-local MiscSection = MiscTab:CreateSection("Automation")
-
--- Toggle for future auto-plant/sell
-MiscTab:CreateToggle({
-   Name = "Auto Plant / Sell",
-   CurrentValue = false,
-   Flag = "AutoToggle",
-   Callback = function(Value)
-       print("Auto planting/selling:", Value)
-       -- later: add your auto plant / sell code here
-   end,
 })
