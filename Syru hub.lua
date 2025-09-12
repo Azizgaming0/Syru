@@ -36,6 +36,8 @@ local Player = game.Players.LocalPlayer
 local UserInputService = game:GetService("UserInputService")  
 
 local MainTab = Window:CreateTab("Main", nil)  
+local AutoTab = Window:CreateTab("Auto-farm", nil)  
+local MiscTab = Window:CreateTab("Misc", nil)  
 
 Rayfield:Notify({  
     Title = "Script executed",  
@@ -47,11 +49,11 @@ Rayfield:Notify({
     }  
 })  
 
--- Infinite Jump Toggle  
+-- Infinite Jump Toggle (in Misc)  
 local infiniteJumpEnabled = false  
 local jumpConnection  
 
-MainTab:CreateToggle({  
+MiscTab:CreateToggle({  
     Name = "Infinite Jump",  
     CurrentValue = false,  
     Flag = "InfiniteJumpToggle",  
@@ -79,8 +81,8 @@ MainTab:CreateToggle({
     end,  
 })  
 
--- WalkSpeed Slider  
-MainTab:CreateSlider({  
+-- WalkSpeed Slider (in Misc)  
+MiscTab:CreateSlider({  
     Name = "Walk Speed",  
     Range = {0, 300},  
     Increment = 1,  
@@ -95,41 +97,13 @@ MainTab:CreateSlider({
     end,  
 })  
 
--- Teleport locations  
-local teleportLocations = {  
-    ["Seeds"] = Vector3.new(88, 2.9, -26),  
-    ["Gears"] = Vector3.new(-286, 2.9, -13),  
-}  
-
--- Teleport Dropdown (fixed)  
-MainTab:CreateDropdown({  
-    Name = "Teleport Shop",  
-    Options = {"Seeds","Gears"},  
-    CurrentOption = {"Seeds"},  
-    MultipleOptions = false,  
-    Flag = "TeleportShop",  
-    Callback = function(Option)  
-        local choice = tostring(type(Option) == "table" and Option[1] or Option) -- force string  
-        local char = Player.Character or Player.CharacterAdded:Wait()  
-        local hrp = char:WaitForChild("HumanoidRootPart")  
-        local coords = teleportLocations[choice]  
-        if coords then  
-            hrp.CFrame = CFrame.new(coords)  
-            print("Teleported to " .. choice)  
-        else  
-            warn("No teleport coordinates for: " .. choice)  
-        end  
-    end,  
-})  
-
--- Auto-farm tab (kept separate)  
-local FarmTab = Window:CreateTab("Auto-farm", nil)  
-FarmTab:CreateToggle({  
+-- Auto-farm Toggle  
+AutoTab:CreateToggle({  
     Name = "Auto Plant / Sell",  
     CurrentValue = false,  
     Flag = "AutoToggle",  
     Callback = function(Value)  
         print("Auto Plant/Sell:", Value)  
-        -- later add your code here  
+        -- later: put auto code here  
     end,  
 })
