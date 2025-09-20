@@ -84,7 +84,7 @@ MiscTab:CreateToggle({
 -- WalkSpeed Slider (in Misc)  
 MiscTab:CreateSlider({  
     Name = "Walk Speed",  
-    Range = {0, 300},  
+    Range = {0, 5000}, -- updated max speed  
     Increment = 1,  
     Suffix = "Speed",  
     CurrentValue = 20,  
