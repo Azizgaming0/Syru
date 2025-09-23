@@ -5,27 +5,42 @@ if placeId == 126884695634066 then
     local PlayerGui = Player:WaitForChild("PlayerGui")
     local UserInputService = game:GetService("UserInputService")
     
-    local LoadingScreen = Instance.new("Frame")
-    LoadingScreen.Name = "LoadingScreen"
-    LoadingScreen.Size = UDim2.new(1, 0, 1, 0)
-    LoadingScreen.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    LoadingScreen.BackgroundTransparency = 0.5
-    LoadingScreen.ZIndex = 10
-    LoadingScreen.Parent = PlayerGui
+    local FADE_TIME = 0.5
     
-    local LoadingText = Instance.new("TextLabel")
-    LoadingText.Name = "LoadingText"
-    LoadingText.Size = UDim2.new(0.5, 0, 0.1, 0)
-    LoadingText.Position = UDim2.new(0.5, 0, 0.5, 0)
-    LoadingText.AnchorPoint = Vector2.new(0.5, 0.5)
-    LoadingText.Text = "Loading Syru Hub..."
-    LoadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    LoadingText.BackgroundTransparency = 1
-    LoadingText.Font = Enum.Font.SourceSansBold
-    LoadingText.TextSize = 30
-    LoadingText.Parent = LoadingScreen
+    local function createLoadingScreen()
+        local loadingScreen = Instance.new("Frame")
+        loadingScreen.Name = "LoadingScreen"
+        loadingScreen.Size = UDim2.new(1, 0, 1, 0)
+        loadingScreen.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+        loadingScreen.BackgroundTransparency = 0.5
+        loadingScreen.ZIndex = 10
+        loadingScreen.Parent = PlayerGui
+        
+        local loadingText = Instance.new("TextLabel")
+        loadingText.Name = "LoadingText"
+        loadingText.Size = UDim2.new(0.5, 0, 0.1, 0)
+        loadingText.Position = UDim2.new(0.5, 0, 0.5, 0)
+        loadingText.AnchorPoint = Vector2.new(0.5, 0.5)
+        loadingText.Text = "Loading Syru Hub..."
+        loadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
+        loadingText.BackgroundTransparency = 1
+        loadingText.Font = Enum.Font.SourceSansBold
+        loadingText.TextSize = 30
+        loadingText.Parent = loadingScreen
+        
+        return loadingScreen
+    end
     
-    task.wait(3)
+    local function fadeOutLoadingScreen(loadingScreen)
+        for i = 1, 10 do
+            task.wait(FADE_TIME / 10)
+            loadingScreen.BackgroundTransparency = 0.5 + (i/10) * 0.5
+            loadingScreen.LoadingText.TextTransparency = i/10
+        end
+        loadingScreen:Destroy()
+    end
+    
+    local loadingScreen = createLoadingScreen()
     
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "CustomUIScreen"
@@ -178,5 +193,5 @@ if placeId == 126884695634066 then
         Window.Visible = false
     end)
     
-    LoadingScreen:Destroy()
+    fadeOutLoadingScreen(loadingScreen)
 end
