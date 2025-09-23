@@ -5,6 +5,28 @@ if placeId == 126884695634066 then
     local PlayerGui = Player:WaitForChild("PlayerGui")
     local UserInputService = game:GetService("UserInputService")
     
+    local LoadingScreen = Instance.new("Frame")
+    LoadingScreen.Name = "LoadingScreen"
+    LoadingScreen.Size = UDim2.new(1, 0, 1, 0)
+    LoadingScreen.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    LoadingScreen.BackgroundTransparency = 0.5
+    LoadingScreen.ZIndex = 10
+    LoadingScreen.Parent = PlayerGui
+    
+    local LoadingText = Instance.new("TextLabel")
+    LoadingText.Name = "LoadingText"
+    LoadingText.Size = UDim2.new(0.5, 0, 0.1, 0)
+    LoadingText.Position = UDim2.new(0.5, 0, 0.5, 0)
+    LoadingText.AnchorPoint = Vector2.new(0.5, 0.5)
+    LoadingText.Text = "Loading Syru Hub..."
+    LoadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    LoadingText.BackgroundTransparency = 1
+    LoadingText.Font = Enum.Font.SourceSansBold
+    LoadingText.TextSize = 30
+    LoadingText.Parent = LoadingScreen
+    
+    task.wait(3)
+    
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "CustomUIScreen"
     ScreenGui.ResetOnSpawn = false
@@ -155,4 +177,6 @@ if placeId == 126884695634066 then
     CloseButton.MouseButton1Click:Connect(function()
         Window.Visible = false
     end)
+    
+    LoadingScreen:Destroy()
 end
