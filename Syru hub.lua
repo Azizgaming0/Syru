@@ -1,10 +1,24 @@
+--[[
+    Syru Hub Final Script
+    This script creates a custom UI with different tabs for various game features.
+]]--
+
+--// Services
 local Player = game.Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
 local UserInputService = game:GetService("UserInputService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local GameEvents = ReplicatedStorage:WaitForChild("GameEvents")
 
+--// UI Configuration
 local FADE_TIME = 0.5
+local LOGO_ASSET_ID = "rbxassetid://135658636515197"
+local WINDOW_SIZE = UDim2.new(0.4, 0, 0.7, 0)
+local WINDOW_COLOR = Color3.fromRGB(40, 44, 52)
+local BUTTON_COLOR = Color3.fromRGB(60, 64, 72)
+local TOGGLE_ON_COLOR = Color3.fromRGB(255, 20, 147)
 
--- Loading Screen UI
+--// UI Creation
 local function createLoadingScreen()
     local loadingScreen = Instance.new("Frame")
     loadingScreen.Name = "LoadingScreen"
@@ -40,7 +54,6 @@ end
 
 local loadingScreen = createLoadingScreen()
 
--- Main ScreenGui
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "CustomUIScreen"
 ScreenGui.ResetOnSpawn = false
@@ -52,10 +65,10 @@ LogoButton.Name = "LogoButton"
 LogoButton.Parent = ScreenGui
 LogoButton.Size = UDim2.new(0, 75, 0, 75)
 LogoButton.Position = UDim2.new(0.05, 0, 0.05, 0)
-LogoButton.BackgroundColor3 = Color3.fromRGB(40, 44, 52)
+LogoButton.BackgroundColor3 = WINDOW_COLOR
 LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 LogoButton.BorderSizePixel = 3
-LogoButton.Image = "rbxassetid://135658636515197"
+LogoButton.Image = LOGO_ASSET_ID
 
 local UICorner_Logo = Instance.new("UICorner")
 UICorner_Logo.CornerRadius = UDim.new(0.5, 0)
@@ -89,10 +102,10 @@ end)
 -- Main Window
 local Window = Instance.new("Frame")
 Window.Name = "SettingsWindow"
-Window.Size = UDim2.new(0.4, 0, 0.7, 0)
+Window.Size = WINDOW_SIZE
 Window.Position = UDim2.new(0.5, 0, 0.5, 0)
 Window.AnchorPoint = Vector2.new(0.5, 0.5)
-Window.BackgroundColor3 = Color3.fromRGB(40, 44, 52)
+Window.BackgroundColor3 = WINDOW_COLOR
 Window.BorderSizePixel = 0
 Window.Visible = false
 Window.Parent = ScreenGui
@@ -101,7 +114,7 @@ local UICorner_SettingsWindow = Instance.new("UICorner")
 UICorner_SettingsWindow.CornerRadius = UDim.new(0, 12)
 UICorner_SettingsWindow.Parent = Window
 
--- Title
+-- Title Bar
 local Title = Instance.new("TextLabel")
 Title.Name = "Title"
 Title.Size = UDim2.new(1, 0, 0, 40)
@@ -110,15 +123,32 @@ Title.Text = "Syru Hub"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.Font = Enum.Font.SourceSansBold
 Title.TextSize = 24
-Title.BackgroundColor3 = Color3.fromRGB(40, 44, 52)
+Title.BackgroundColor3 = WINDOW_COLOR
 Title.Parent = Window
 
--- Tab Buttons Frame
+-- Close Button
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "CloseButton"
+CloseButton.Size = UDim2.new(0, 30, 0, 30)
+CloseButton.Position = UDim2.new(1, -35, 0, 5)
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.TextSize = 20
+CloseButton.CornerRadius = UDim.new(0.5, 0)
+CloseButton.Parent = Window
+
+CloseButton.MouseButton1Click:Connect(function()
+    Window.Visible = false
+end)
+
+--// Tab System
 local TabButtonsFrame = Instance.new("Frame")
 TabButtonsFrame.Name = "TabButtons"
 TabButtonsFrame.Size = UDim2.new(1, 0, 0, 40)
 TabButtonsFrame.Position = UDim2.new(0, 0, 0, 40)
-TabButtonsFrame.BackgroundColor3 = Color3.fromRGB(40, 44, 52)
+TabButtonsFrame.BackgroundColor3 = WINDOW_COLOR
 TabButtonsFrame.Parent = Window
 
 local TabButtonsLayout = Instance.new("UIListLayout")
@@ -126,7 +156,6 @@ TabButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
 TabButtonsLayout.Padding = UDim.new(0, 5)
 TabButtonsLayout.Parent = TabButtonsFrame
 
--- Tab Content Frame
 local TabContentFrame = Instance.new("Frame")
 TabContentFrame.Name = "TabContent"
 TabContentFrame.Size = UDim2.new(1, -20, 1, -100)
@@ -149,7 +178,7 @@ MainTab.Text = "Main"
 MainTab.TextColor3 = Color3.fromRGB(255, 255, 255)
 MainTab.Font = Enum.Font.SourceSansBold
 MainTab.TextSize = 18
-MainTab.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+MainTab.BackgroundColor3 = BUTTON_COLOR
 MainTab.Parent = TabButtonsFrame
 
 local AutofarmTab = Instance.new("TextButton")
@@ -159,7 +188,7 @@ AutofarmTab.Text = "Autofarm"
 AutofarmTab.TextColor3 = Color3.fromRGB(255, 255, 255)
 AutofarmTab.Font = Enum.Font.SourceSansBold
 AutofarmTab.TextSize = 18
-AutofarmTab.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+AutofarmTab.BackgroundColor3 = BUTTON_COLOR
 AutofarmTab.Parent = TabButtonsFrame
 
 local MainFeaturesFrame = Instance.new("Frame")
@@ -196,7 +225,8 @@ AutofarmTab.MouseButton1Click:Connect(function()
     AutofarmFeaturesFrame.Visible = true
 end)
 
--- Add features to Main Tab
+--// Main Features
+-- Infinite Jump Toggle
 local InfiniteJumpToggle = Instance.new("TextButton")
 InfiniteJumpToggle.Name = "InfiniteJumpToggle"
 InfiniteJumpToggle.Size = UDim2.new(1, 0, 0, 40)
@@ -204,7 +234,7 @@ InfiniteJumpToggle.Text = "Infinite Jump: OFF"
 InfiniteJumpToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
 InfiniteJumpToggle.Font = Enum.Font.SourceSans
 InfiniteJumpToggle.TextSize = 18
-InfiniteJumpToggle.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+InfiniteJumpToggle.BackgroundColor3 = BUTTON_COLOR
 InfiniteJumpToggle.Parent = MainFeaturesFrame
 InfiniteJumpToggle.LayoutOrder = 1
 
@@ -215,7 +245,7 @@ InfiniteJumpToggle.MouseButton1Click:Connect(function()
     infiniteJumpEnabled = not infiniteJumpEnabled
     if infiniteJumpEnabled then
         InfiniteJumpToggle.Text = "Infinite Jump: ON"
-        InfiniteJumpToggle.BackgroundColor3 = Color3.fromRGB(255, 20, 147)
+        InfiniteJumpToggle.BackgroundColor3 = TOGGLE_ON_COLOR
         jumpConnection = UserInputService.JumpRequest:Connect(function()
             local char = Player.Character
             if char then
@@ -227,7 +257,7 @@ InfiniteJumpToggle.MouseButton1Click:Connect(function()
         end)
     else
         InfiniteJumpToggle.Text = "Infinite Jump: OFF"
-        InfiniteJumpToggle.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+        InfiniteJumpToggle.BackgroundColor3 = BUTTON_COLOR
         if jumpConnection then
             jumpConnection:Disconnect()
             jumpConnection = nil
@@ -235,10 +265,11 @@ InfiniteJumpToggle.MouseButton1Click:Connect(function()
     end
 end)
 
+-- Walk Speed Slider
 local WalkSpeedSlider = Instance.new("Frame")
 WalkSpeedSlider.Name = "WalkSpeedSlider"
 WalkSpeedSlider.Size = UDim2.new(1, 0, 0, 20)
-WalkSpeedSlider.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+WalkSpeedSlider.BackgroundColor3 = BUTTON_COLOR
 WalkSpeedSlider.Parent = MainFeaturesFrame
 WalkSpeedSlider.LayoutOrder = 2
 
@@ -246,7 +277,7 @@ local SliderKnob = Instance.new("TextButton")
 SliderKnob.Name = "SliderKnob"
 SliderKnob.Size = UDim2.new(0.1, 0, 1.2, 0)
 SliderKnob.Position = UDim2.new(0, 0, 0, 0)
-SliderKnob.BackgroundColor3 = Color3.fromRGB(255, 20, 147)
+SliderKnob.BackgroundColor3 = TOGGLE_ON_COLOR
 SliderKnob.Text = ""
 SliderKnob.TextTransparency = 1
 SliderKnob.Parent = WalkSpeedSlider
@@ -293,7 +324,8 @@ UserInputService.InputChanged:Connect(function(input, gameProcessed)
     end
 end)
 
--- Add features to Autofarm Tab
+--// Autofarm Features
+-- Auto Plant
 local AutoPlantButton = Instance.new("TextButton")
 AutoPlantButton.Name = "AutoPlantButton"
 AutoPlantButton.Size = UDim2.new(1, 0, 0, 40)
@@ -301,13 +333,11 @@ AutoPlantButton.Text = "Auto Plant Carrot: OFF"
 AutoPlantButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 AutoPlantButton.Font = Enum.Font.SourceSans
 AutoPlantButton.TextSize = 18
-AutoPlantButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+AutoPlantButton.BackgroundColor3 = BUTTON_COLOR
 AutoPlantButton.Parent = AutofarmFeaturesFrame
 AutoPlantButton.LayoutOrder = 1
 
 local autoPlantingEnabled = false
-local plantConnection
-
 local function autoPlant()
     local corners = {
         Vector3.new(-136.7954864501953, 0.1355266571044922, -75.99693298339844),
@@ -327,7 +357,7 @@ local function autoPlant()
         
         local position = Vector3.new(randomX, corners[1].Y, randomZ)
         local args = { position, "Carrot" }
-        game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("Plant_RE"):FireServer(unpack(args))
+        GameEvents:WaitForChild("Plant_RE"):FireServer(unpack(args))
         
         task.wait(1)
     end
@@ -337,14 +367,15 @@ AutoPlantButton.MouseButton1Click:Connect(function()
     autoPlantingEnabled = not autoPlantingEnabled
     if autoPlantingEnabled then
         AutoPlantButton.Text = "Auto Plant Carrot: ON"
-        AutoPlantButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147)
+        AutoPlantButton.BackgroundColor3 = TOGGLE_ON_COLOR
         task.spawn(autoPlant)
     else
         AutoPlantButton.Text = "Auto Plant Carrot: OFF"
-        AutoPlantButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+        AutoPlantButton.BackgroundColor3 = BUTTON_COLOR
     end
 end)
 
+-- Auto Buy Tier 1 Carrot Seed
 local AutoBuyButton = Instance.new("TextButton")
 AutoBuyButton.Name = "AutoBuyButton"
 AutoBuyButton.Size = UDim2.new(1, 0, 0, 40)
@@ -352,7 +383,7 @@ AutoBuyButton.Text = "Auto Buy Tier 1 Carrot Seed"
 AutoBuyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 AutoBuyButton.Font = Enum.Font.SourceSans
 AutoBuyButton.TextSize = 18
-AutoBuyButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+AutoBuyButton.BackgroundColor3 = BUTTON_COLOR
 AutoBuyButton.Parent = AutofarmFeaturesFrame
 AutoBuyButton.LayoutOrder = 2
 
@@ -361,9 +392,10 @@ AutoBuyButton.MouseButton1Click:Connect(function()
         "Tier 1",
         "Carrot"
     }
-    game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("BuySeedStock"):FireServer(unpack(args))
+    GameEvents:WaitForChild("BuySeedStock"):FireServer(unpack(args))
 end)
 
+-- Teleport to Seed Shop
 local SeedShopButton = Instance.new("TextButton")
 SeedShopButton.Name = "SeedShopButton"
 SeedShopButton.Size = UDim2.new(1, 0, 0, 40)
@@ -371,15 +403,16 @@ SeedShopButton.Text = "Teleport to Seed Shop"
 SeedShopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 SeedShopButton.Font = Enum.Font.SourceSans
 SeedShopButton.TextSize = 18
-SeedShopButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+SeedShopButton.BackgroundColor3 = BUTTON_COLOR
 SeedShopButton.Parent = AutofarmFeaturesFrame
 SeedShopButton.LayoutOrder = 3
 
 SeedShopButton.MouseButton1Click:Connect(function()
     local args = { "Seed Shop" }
-    game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("PlayerTeleportTriggered"):FireServer(unpack(args))
+    GameEvents:WaitForChild("PlayerTeleportTriggered"):FireServer(unpack(args))
 end)
 
+-- Teleport to Sell Shop
 local SellShopButton = Instance.new("TextButton")
 SellShopButton.Name = "SellShopButton"
 SellShopButton.Size = UDim2.new(1, 0, 0, 40)
@@ -387,15 +420,16 @@ SellShopButton.Text = "Teleport to Sell Shop"
 SellShopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 SellShopButton.Font = Enum.Font.SourceSans
 SellShopButton.TextSize = 18
-SellShopButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+SellShopButton.BackgroundColor3 = BUTTON_COLOR
 SellShopButton.Parent = AutofarmFeaturesFrame
 SellShopButton.LayoutOrder = 4
 
 SellShopButton.MouseButton1Click:Connect(function()
     local args = { "Sell Shop" }
-    game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("PlayerTeleportTriggered"):FireServer(unpack(args))
+    GameEvents:WaitForChild("PlayerTeleportTriggered"):FireServer(unpack(args))
 end)
 
+-- Sell Inventory
 local SellInventoryButton = Instance.new("TextButton")
 SellInventoryButton.Name = "SellInventoryButton"
 SellInventoryButton.Size = UDim2.new(1, 0, 0, 40)
@@ -403,12 +437,12 @@ SellInventoryButton.Text = "Sell Inventory"
 SellInventoryButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 SellInventoryButton.Font = Enum.Font.SourceSans
 SellInventoryButton.TextSize = 18
-SellInventoryButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+SellInventoryButton.BackgroundColor3 = BUTTON_COLOR
 SellInventoryButton.Parent = AutofarmFeaturesFrame
 SellInventoryButton.LayoutOrder = 5
 
 SellInventoryButton.MouseButton1Click:Connect(function()
-    game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("Sell_Inventory"):FireServer()
+    GameEvents:WaitForChild("Sell_Inventory"):FireServer()
 end)
 
 -- Initial state
@@ -417,23 +451,6 @@ MainFeaturesFrame.Visible = true
 -- Click Logo to Toggle Window
 LogoButton.MouseButton1Click:Connect(function()
     Window.Visible = not Window.Visible
-end)
-
--- Close Button
-local CloseButton = Instance.new("TextButton")
-CloseButton.Name = "CloseButton"
-CloseButton.Size = UDim2.new(0, 30, 0, 30)
-CloseButton.Position = UDim2.new(1, -35, 0, 5)
-CloseButton.Text = "X"
-CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-CloseButton.Font = Enum.Font.SourceSansBold
-CloseButton.TextSize = 20
-CloseButton.CornerRadius = UDim.new(0.5, 0)
-CloseButton.Parent = Window
-
-CloseButton.MouseButton1Click:Connect(function()
-    Window.Visible = false
 end)
 
 fadeOutLoadingScreen(loadingScreen)
