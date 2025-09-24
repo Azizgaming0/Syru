@@ -50,12 +50,12 @@ ScreenGui.Parent = PlayerGui
 local LogoButton = Instance.new("ImageButton")
 LogoButton.Name = "LogoButton"
 LogoButton.Parent = ScreenGui
-LogoButton.Size = UDim2.new(0, 75, 0, 75) -- Increased size
+LogoButton.Size = UDim2.new(0, 75, 0, 75)
 LogoButton.Position = UDim2.new(0.05, 0, 0.05, 0)
 LogoButton.BackgroundColor3 = Color3.fromRGB(40, 44, 52)
 LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 LogoButton.BorderSizePixel = 3
-LogoButton.Image = "rbxassetid://135658636515197" -- Corrected Asset ID
+LogoButton.Image = "rbxassetid://135658636515197"
 
 local UICorner_Logo = Instance.new("UICorner")
 UICorner_Logo.CornerRadius = UDim.new(0.5, 0)
@@ -72,7 +72,7 @@ LogoButton.InputBegan:Connect(function(input)
 		dragStart = input.Position
 		startPos = LogoButton.Position
 		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputState.End then
+			if input.UserInputState == Enum.UserInputType.End then
 				dragging = false
 			end
 		end)
@@ -89,7 +89,7 @@ end)
 -- Main Window
 local Window = Instance.new("Frame")
 Window.Name = "SettingsWindow"
-Window.Size = UDim2.new(0.4, 0, 0.7, 0) -- Increased size
+Window.Size = UDim2.new(0.4, 0, 0.7, 0)
 Window.Position = UDim2.new(0.5, 0, 0.5, 0)
 Window.AnchorPoint = Vector2.new(0.5, 0.5)
 Window.BackgroundColor3 = Color3.fromRGB(40, 44, 52)
@@ -345,6 +345,25 @@ AutoPlantButton.MouseButton1Click:Connect(function()
     end
 end)
 
+local AutoBuyButton = Instance.new("TextButton")
+AutoBuyButton.Name = "AutoBuyButton"
+AutoBuyButton.Size = UDim2.new(1, 0, 0, 40)
+AutoBuyButton.Text = "Auto Buy Tier 1 Carrot Seed"
+AutoBuyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoBuyButton.Font = Enum.Font.SourceSans
+AutoBuyButton.TextSize = 18
+AutoBuyButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+AutoBuyButton.Parent = AutofarmFeaturesFrame
+AutoBuyButton.LayoutOrder = 2
+
+AutoBuyButton.MouseButton1Click:Connect(function()
+    local args = {
+        "Tier 1",
+        "Carrot"
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("BuySeedStock"):FireServer(unpack(args))
+end)
+
 local SeedShopButton = Instance.new("TextButton")
 SeedShopButton.Name = "SeedShopButton"
 SeedShopButton.Size = UDim2.new(1, 0, 0, 40)
@@ -354,7 +373,7 @@ SeedShopButton.Font = Enum.Font.SourceSans
 SeedShopButton.TextSize = 18
 SeedShopButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
 SeedShopButton.Parent = AutofarmFeaturesFrame
-SeedShopButton.LayoutOrder = 2
+SeedShopButton.LayoutOrder = 3
 
 SeedShopButton.MouseButton1Click:Connect(function()
     local args = { "Seed Shop" }
@@ -370,7 +389,7 @@ SellShopButton.Font = Enum.Font.SourceSans
 SellShopButton.TextSize = 18
 SellShopButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
 SellShopButton.Parent = AutofarmFeaturesFrame
-SellShopButton.LayoutOrder = 3
+SellShopButton.LayoutOrder = 4
 
 SellShopButton.MouseButton1Click:Connect(function()
     local args = { "Sell Shop" }
@@ -386,7 +405,7 @@ SellInventoryButton.Font = Enum.Font.SourceSans
 SellInventoryButton.TextSize = 18
 SellInventoryButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
 SellInventoryButton.Parent = AutofarmFeaturesFrame
-SellInventoryButton.LayoutOrder = 4
+SellInventoryButton.LayoutOrder = 5
 
 SellInventoryButton.MouseButton1Click:Connect(function()
     game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("Sell_Inventory"):FireServer()
