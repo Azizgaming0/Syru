@@ -243,11 +243,13 @@ WalkSpeedSlider.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
 WalkSpeedSlider.Parent = MainFeaturesFrame
 WalkSpeedSlider.LayoutOrder = 2
 
-local SliderKnob = Instance.new("Frame")
+local SliderKnob = Instance.new("TextButton")
 SliderKnob.Name = "SliderKnob"
 SliderKnob.Size = UDim2.new(0.1, 0, 1.2, 0)
 SliderKnob.Position = UDim2.new(0, 0, 0, 0)
 SliderKnob.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+SliderKnob.Text = ""
+SliderKnob.TextTransparency = 1
 SliderKnob.Parent = WalkSpeedSlider
 
 local SliderLabel = Instance.new("TextLabel")
@@ -418,3 +420,4 @@ end)
 
 fadeOutLoadingScreen(loadingScreen)
 ]])()
+```eof
