@@ -50,12 +50,12 @@ ScreenGui.Parent = PlayerGui
 local LogoButton = Instance.new("ImageButton")
 LogoButton.Name = "LogoButton"
 LogoButton.Parent = ScreenGui
-LogoButton.Size = UDim2.new(0, 50, 0, 50)
+LogoButton.Size = UDim2.new(0, 75, 0, 75) -- Increased size
 LogoButton.Position = UDim2.new(0.05, 0, 0.05, 0)
-LogoButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147)
+LogoButton.BackgroundColor3 = Color3.fromRGB(40, 44, 52)
 LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 LogoButton.BorderSizePixel = 3
-LogoButton.Image = "rbxassetid://1356586365197"
+LogoButton.Image = "rbxassetid://135658636515197" -- Corrected Asset ID
 
 local UICorner_Logo = Instance.new("UICorner")
 UICorner_Logo.CornerRadius = UDim.new(0.5, 0)
@@ -63,7 +63,7 @@ UICorner_Logo.Parent = LogoButton
 
 -- Dragging Logic
 local dragging = false
-local dragStart = Vector2.new(0,0)
+local dragStart = Vector3.new(0,0,0)
 local startPos = UDim2.new(0,0,0,0)
 
 LogoButton.InputBegan:Connect(function(input)
@@ -89,7 +89,7 @@ end)
 -- Main Window
 local Window = Instance.new("Frame")
 Window.Name = "SettingsWindow"
-Window.Size = UDim2.new(0.35, 0, 0.6, 0)
+Window.Size = UDim2.new(0.4, 0, 0.7, 0) -- Increased size
 Window.Position = UDim2.new(0.5, 0, 0.5, 0)
 Window.AnchorPoint = Vector2.new(0.5, 0.5)
 Window.BackgroundColor3 = Color3.fromRGB(40, 44, 52)
@@ -215,7 +215,7 @@ InfiniteJumpToggle.MouseButton1Click:Connect(function()
     infiniteJumpEnabled = not infiniteJumpEnabled
     if infiniteJumpEnabled then
         InfiniteJumpToggle.Text = "Infinite Jump: ON"
-        InfiniteJumpToggle.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+        InfiniteJumpToggle.BackgroundColor3 = Color3.fromRGB(255, 20, 147)
         jumpConnection = UserInputService.JumpRequest:Connect(function()
             local char = Player.Character
             if char then
@@ -246,7 +246,7 @@ local SliderKnob = Instance.new("TextButton")
 SliderKnob.Name = "SliderKnob"
 SliderKnob.Size = UDim2.new(0.1, 0, 1.2, 0)
 SliderKnob.Position = UDim2.new(0, 0, 0, 0)
-SliderKnob.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+SliderKnob.BackgroundColor3 = Color3.fromRGB(255, 20, 147)
 SliderKnob.Text = ""
 SliderKnob.TextTransparency = 1
 SliderKnob.Parent = WalkSpeedSlider
@@ -337,7 +337,7 @@ AutoPlantButton.MouseButton1Click:Connect(function()
     autoPlantingEnabled = not autoPlantingEnabled
     if autoPlantingEnabled then
         AutoPlantButton.Text = "Auto Plant Carrot: ON"
-        AutoPlantButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+        AutoPlantButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147)
         task.spawn(autoPlant)
     else
         AutoPlantButton.Text = "Auto Plant Carrot: OFF"
