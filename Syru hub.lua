@@ -72,7 +72,7 @@ LogoButton.InputBegan:Connect(function(input)
 		dragStart = input.Position
 		startPos = LogoButton.Position
 		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputType.End then
+			if input.UserInputState == Enum.UserInputState.End then
 				dragging = false
 			end
 		end)
