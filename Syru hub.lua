@@ -13,14 +13,14 @@ ScreenGui.Parent = PlayerGui
 local LogoButton = Instance.new("ImageButton")
 LogoButton.Name = "LogoButton"
 LogoButton.Parent = ScreenGui
-LogoButton.Size = UDim2.new(0, 100, 0, 100)
+LogoButton.Size = UDim2.new(0, 120, 0, 120)
 LogoButton.Position = UDim2.new(0.05, 0, 0.05, 0)
-LogoButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147) -- Dark Pink
-LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0) -- Black border
+LogoButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147)
+LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 LogoButton.BorderSizePixel = 3
 LogoButton.Image = "https://raw.githubusercontent.com/Azizgaming0/Logo/main/Gemini_Generated_Image_thn6svthn6svthn6.png"
 
--- Dragging Logic
+-- Dragging
 local dragging, dragInput, dragStart, startPos
 local function update(input)
     local delta = input.Position - dragStart
@@ -60,7 +60,7 @@ end)
 -- Main Window
 local Window = Instance.new("Frame")
 Window.Name = "MainWindow"
-Window.Size = UDim2.new(0.35, 0, 0.6, 0)
+Window.Size = UDim2.new(0, 400, 0, 300)
 Window.Position = UDim2.new(0.5, 0, 0.5, 0)
 Window.AnchorPoint = Vector2.new(0.5, 0.5)
 Window.BackgroundColor3 = Color3.fromRGB(40, 44, 52)
@@ -81,8 +81,8 @@ Title.Position = UDim2.new(0, 0, 0, 0)
 Title.Text = "Syru Hub"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.Font = Enum.Font.GothamBold
-Title.TextSize = 24
-Title.BackgroundColor3 = Color3.fromRGB(40, 44, 52)
+Title.TextSize = 28
+Title.BackgroundTransparency = 1
 Title.Parent = Window
 
 -- Close Button
@@ -95,21 +95,20 @@ CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 CloseButton.Font = Enum.Font.SourceSansBold
 CloseButton.TextSize = 20
 CloseButton.Parent = Window
-
 CloseButton.MouseButton1Click:Connect(function()
     Window.Visible = false
 end)
 
--- Main Tab Frame
+-- Tab Container
 local MainTab = Instance.new("Frame")
-MainTab.Size = UDim2.new(1, -20, 0.85, 0)
+MainTab.Size = UDim2.new(1, -20, 0.85, -50)
 MainTab.Position = UDim2.new(0.5, 0, 0.55, 0)
 MainTab.AnchorPoint = Vector2.new(0.5, 0.5)
 MainTab.BackgroundColor3 = Color3.fromRGB(50, 54, 62)
 MainTab.Parent = Window
 
 local UIListLayout = Instance.new("UIListLayout")
-UIListLayout.Padding = UDim.new(0, 5)
+UIListLayout.Padding = UDim.new(0, 8)
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout.Parent = MainTab
 
@@ -124,7 +123,6 @@ InfiniteJumpToggle.LayoutOrder = 1
 
 local infiniteJumpEnabled = false
 local jumpConnection
-
 InfiniteJumpToggle.MouseButton1Click:Connect(function()
     infiniteJumpEnabled = not infiniteJumpEnabled
     if infiniteJumpEnabled then
@@ -172,7 +170,6 @@ SliderLabel.Parent = WalkSpeedSlider
 
 local isDragging = false
 local maxSpeed = 5000
-
 SliderKnob.MouseButton1Down:Connect(function()
     isDragging = true
     UserInputService.InputEnded:Connect(function(input)
@@ -192,7 +189,6 @@ UserInputService.InputChanged:Connect(function(input)
         SliderKnob.Position = UDim2.new(newX, 0, 0, 0)
         
         local newSpeed = 20 + newX * (maxSpeed - 20)
-        
         local char = Player.Character
         if char and char:FindFirstChildOfClass("Humanoid") then
             char.Humanoid.WalkSpeed = newSpeed
