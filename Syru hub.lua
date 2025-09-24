@@ -18,7 +18,7 @@ LogoButton.Position = UDim2.new(0.05, 0, 0.05, 0)
 LogoButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147) -- Dark Pink
 LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0) -- Black border
 LogoButton.BorderSizePixel = 3
-LogoButton.Image = "https://freeimage.host/i/KlH053Q" -- Empty if just color
+LogoButton.Image = "https://raw.githubusercontent.com/Azizgaming0/Logo/main/Gemini_Generated_Image_thn6svthn6svthn6.png"
 
 -- Dragging Logic
 local dragging, dragInput, dragStart, startPos
