@@ -1,4 +1,3 @@
-loadstring([[
 local Player = game.Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
 local UserInputService = game:GetService("UserInputService")
@@ -419,5 +418,3 @@ CloseButton.MouseButton1Click:Connect(function()
 end)
 
 fadeOutLoadingScreen(loadingScreen)
-]])()
-```eof
