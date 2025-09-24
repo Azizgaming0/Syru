@@ -18,7 +18,7 @@ LogoButton.Position = UDim2.new(0.05, 0, 0.05, 0)
 LogoButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147) -- Dark Pink
 LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0) -- Black border
 LogoButton.BorderSizePixel = 3
-LogoButton.Image = "" -- Empty if just color
+LogoButton.Image = "https://freeimage.host/i/KlH053Q" -- Empty if just color
 
 -- Dragging Logic
 local dragging, dragInput, dragStart, startPos
