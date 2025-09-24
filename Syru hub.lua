@@ -56,6 +56,7 @@ LogoButton.Position = UDim2.new(0.05, 0, 0.05, 0)
 LogoButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147)
 LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 LogoButton.BorderSizePixel = 3
+-- NOTE: Please replace this with your own image's Asset ID after uploading it to Roblox.
 LogoButton.Image = "https://raw.githubusercontent.com/Azizgaming0/Logo/main/Gemini_Generated_Image_thn6svthn6svthn6.png"
 
 local UICorner_Logo = Instance.new("UICorner")
@@ -143,43 +144,59 @@ UIListLayout_TabContent.Padding = UDim.new(0, 5)
 UIListLayout_TabContent.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout_TabContent.Parent = TabContentFrame
 
-local function createTab(tabName)
-    local tabButton = Instance.new("TextButton")
-    tabButton.Name = tabName .. "Tab"
-    tabButton.Size = UDim2.new(0.5, 0, 1, 0)
-    tabButton.Text = tabName
-    tabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    tabButton.Font = Enum.Font.SourceSansBold
-    tabButton.TextSize = 18
-    tabButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
-    tabButton.Parent = TabButtonsFrame
+local MainTab = Instance.new("TextButton")
+MainTab.Name = "MainTab"
+MainTab.Size = UDim2.new(0.5, 0, 1, 0)
+MainTab.Text = "Main"
+MainTab.TextColor3 = Color3.fromRGB(255, 255, 255)
+MainTab.Font = Enum.Font.SourceSansBold
+MainTab.TextSize = 18
+MainTab.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+MainTab.Parent = TabButtonsFrame
 
-    local tabFrame = Instance.new("Frame")
-    tabFrame.Name = tabName
-    tabFrame.Size = UDim2.new(1, 0, 1, 0)
-    tabFrame.BackgroundTransparency = 1
-    tabFrame.Visible = false
-    tabFrame.Parent = TabContentFrame
+local AutofarmTab = Instance.new("TextButton")
+AutofarmTab.Name = "AutofarmTab"
+AutofarmTab.Size = UDim2.new(0.5, 0, 1, 0)
+AutofarmTab.Text = "Autofarm"
+AutofarmTab.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutofarmTab.Font = Enum.Font.SourceSansBold
+AutofarmTab.TextSize = 18
+AutofarmTab.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+AutofarmTab.Parent = TabButtonsFrame
 
-    local tabLayout = Instance.new("UIListLayout")
-    tabLayout.Padding = UDim.new(0, 5)
-    tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    tabLayout.Parent = tabFrame
-    
-    tabButton.MouseButton1Click:Connect(function()
-        for i, v in ipairs(TabContentFrame:GetChildren()) do
-            if v:IsA("Frame") and v ~= tabFrame then
-                v.Visible = false
-            end
-        end
-        tabFrame.Visible = true
-    end)
+local MainFeaturesFrame = Instance.new("Frame")
+MainFeaturesFrame.Name = "MainFeatures"
+MainFeaturesFrame.Size = UDim2.new(1, 0, 1, 0)
+MainFeaturesFrame.BackgroundTransparency = 1
+MainFeaturesFrame.Visible = true
+MainFeaturesFrame.Parent = TabContentFrame
 
-    return tabFrame
-end
+local MainLayout = Instance.new("UIListLayout")
+MainLayout.Padding = UDim.new(0, 5)
+MainLayout.SortOrder = Enum.SortOrder.LayoutOrder
+MainLayout.Parent = MainFeaturesFrame
 
-local MainTab = createTab("Main")
-local AutofarmTab = createTab("Autofarm")
+local AutofarmFeaturesFrame = Instance.new("Frame")
+AutofarmFeaturesFrame.Name = "AutofarmFeatures"
+AutofarmFeaturesFrame.Size = UDim2.new(1, 0, 1, 0)
+AutofarmFeaturesFrame.BackgroundTransparency = 1
+AutofarmFeaturesFrame.Visible = false
+AutofarmFeaturesFrame.Parent = TabContentFrame
+
+local AutofarmLayout = Instance.new("UIListLayout")
+AutofarmLayout.Padding = UDim.new(0, 5)
+AutofarmLayout.SortOrder = Enum.SortOrder.LayoutOrder
+AutofarmLayout.Parent = AutofarmFeaturesFrame
+
+MainTab.MouseButton1Click:Connect(function()
+    MainFeaturesFrame.Visible = true
+    AutofarmFeaturesFrame.Visible = false
+end)
+
+AutofarmTab.MouseButton1Click:Connect(function()
+    MainFeaturesFrame.Visible = false
+    AutofarmFeaturesFrame.Visible = true
+end)
 
 -- Add features to Main Tab
 local InfiniteJumpToggle = Instance.new("TextButton")
@@ -190,7 +207,8 @@ InfiniteJumpToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
 InfiniteJumpToggle.Font = Enum.Font.SourceSans
 InfiniteJumpToggle.TextSize = 18
 InfiniteJumpToggle.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
-InfiniteJumpToggle.Parent = MainTab
+InfiniteJumpToggle.Parent = MainFeaturesFrame
+InfiniteJumpToggle.LayoutOrder = 1
 
 local infiniteJumpEnabled = false
 local jumpConnection
@@ -223,7 +241,8 @@ local WalkSpeedSlider = Instance.new("Frame")
 WalkSpeedSlider.Name = "WalkSpeedSlider"
 WalkSpeedSlider.Size = UDim2.new(1, 0, 0, 20)
 WalkSpeedSlider.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
-WalkSpeedSlider.Parent = MainTab
+WalkSpeedSlider.Parent = MainFeaturesFrame
+WalkSpeedSlider.LayoutOrder = 2
 
 local SliderKnob = Instance.new("Frame")
 SliderKnob.Name = "SliderKnob"
@@ -283,7 +302,8 @@ AutoPlantButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 AutoPlantButton.Font = Enum.Font.SourceSans
 AutoPlantButton.TextSize = 18
 AutoPlantButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
-AutoPlantButton.Parent = AutofarmTab
+AutoPlantButton.Parent = AutofarmFeaturesFrame
+AutoPlantButton.LayoutOrder = 1
 
 local autoPlantingEnabled = false
 local plantConnection
@@ -333,7 +353,8 @@ SeedShopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 SeedShopButton.Font = Enum.Font.SourceSans
 SeedShopButton.TextSize = 18
 SeedShopButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
-SeedShopButton.Parent = AutofarmTab
+SeedShopButton.Parent = AutofarmFeaturesFrame
+SeedShopButton.LayoutOrder = 2
 
 SeedShopButton.MouseButton1Click:Connect(function()
     local args = { "Seed Shop" }
@@ -348,7 +369,8 @@ SellShopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 SellShopButton.Font = Enum.Font.SourceSans
 SellShopButton.TextSize = 18
 SellShopButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
-SellShopButton.Parent = AutofarmTab
+SellShopButton.Parent = AutofarmFeaturesFrame
+SellShopButton.LayoutOrder = 3
 
 SellShopButton.MouseButton1Click:Connect(function()
     local args = { "Sell Shop" }
@@ -363,14 +385,15 @@ SellInventoryButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 SellInventoryButton.Font = Enum.Font.SourceSans
 SellInventoryButton.TextSize = 18
 SellInventoryButton.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
-SellInventoryButton.Parent = AutofarmTab
+SellInventoryButton.Parent = AutofarmFeaturesFrame
+SellInventoryButton.LayoutOrder = 4
 
 SellInventoryButton.MouseButton1Click:Connect(function()
     game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("Sell_Inventory"):FireServer()
 end)
 
 -- Initial state
-MainTab.Visible = true
+MainFeaturesFrame.Visible = true
 
 -- Click Logo to Toggle Window
 LogoButton.MouseButton1Click:Connect(function()
