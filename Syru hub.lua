@@ -49,6 +49,54 @@ if placeId == 126884695634066 then
     ScreenGui.ResetOnSpawn = false
     ScreenGui.Parent = PlayerGui
 
+    -- Draggable Logo Button
+    local LogoButton = Instance.new("ImageButton")
+    LogoButton.Name = "LogoButton"
+    LogoButton.Parent = ScreenGui
+    LogoButton.Size = UDim2.new(0, 100, 0, 100)
+    LogoButton.Position = UDim2.new(0.05, 0, 0.05, 0) -- top-left corner
+    LogoButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147) -- dark pink
+    LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0) -- black border
+    LogoButton.BorderSizePixel = 3
+    LogoButton.Image = "" -- empty if you just want colored box
+
+    -- Draggable logic
+    local dragging, dragInput, dragStart, startPos
+    local function update(input)
+        local delta = input.Position - dragStart
+        LogoButton.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+
+    LogoButton.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = LogoButton.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    LogoButton.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInput = input
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            update(input)
+        end
+    end)
+
     -- Main Window
     local Window = Instance.new("Frame")
     Window.Name = "MainWindow"
@@ -59,6 +107,11 @@ if placeId == 126884695634066 then
     Window.BorderSizePixel = 0
     Window.Visible = false
     Window.Parent = ScreenGui
+
+    -- Click logo to toggle UI
+    LogoButton.MouseButton1Click:Connect(function()
+        Window.Visible = not Window.Visible
+    end)
 
     -- Title
     local Title = Instance.new("TextLabel")
@@ -85,19 +138,6 @@ if placeId == 126884695634066 then
 
     CloseButton.MouseButton1Click:Connect(function()
         Window.Visible = false
-    end)
-
-    -- Open Button
-    local OpenButton = Instance.new("TextButton")
-    OpenButton.Size = UDim2.new(0, 50, 0, 50)
-    OpenButton.Position = UDim2.new(1, -60, 1, -60)
-    OpenButton.Text = "Open"
-    OpenButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    OpenButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
-    OpenButton.Parent = ScreenGui
-
-    OpenButton.MouseButton1Click:Connect(function()
-        Window.Visible = not Window.Visible
     end)
 
     -- Main Tab Frame
@@ -149,7 +189,7 @@ if placeId == 126884695634066 then
         end
     end)
 
-    -- Walk Speed Slider (simplified)
+    -- Walk Speed Slider
     local WalkSpeedSlider = Instance.new("Frame")
     WalkSpeedSlider.Size = UDim2.new(1, 0, 0, 20)
     WalkSpeedSlider.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
