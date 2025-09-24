@@ -1,63 +1,26 @@
+loadstring([[
 local Player = game.Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
 local UserInputService = game:GetService("UserInputService")
 
-local FADE_TIME = 0.5
-
--- Loading Screen
-local function createLoadingScreen()
-    local loadingScreen = Instance.new("Frame")
-    loadingScreen.Name = "LoadingScreen"
-    loadingScreen.Size = UDim2.new(1, 0, 1, 0)
-    loadingScreen.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    loadingScreen.BackgroundTransparency = 0.5
-    loadingScreen.ZIndex = 10
-    loadingScreen.Parent = PlayerGui
-    
-    local loadingText = Instance.new("TextLabel")
-    loadingText.Name = "LoadingText"
-    loadingText.Size = UDim2.new(0.5, 0, 0.1, 0)
-    loadingText.Position = UDim2.new(0.5, 0, 0.5, 0)
-    loadingText.AnchorPoint = Vector2.new(0.5, 0.5)
-    loadingText.Text = "Loading Syru Hub..."
-    loadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    loadingText.BackgroundTransparency = 1
-    loadingText.Font = Enum.Font.SourceSansBold
-    loadingText.TextSize = 30
-    loadingText.Parent = loadingScreen
-    
-    return loadingScreen
-end
-
-local function fadeOutLoadingScreen(loadingScreen)
-    for i = 1, 10 do
-        task.wait(FADE_TIME / 10)
-        loadingScreen.BackgroundTransparency = 0.5 + (i/10) * 0.5
-        loadingScreen.LoadingText.TextTransparency = i/10
-    end
-    loadingScreen:Destroy()
-end
-
-local loadingScreen = createLoadingScreen()
-
--- Custom GUI Setup
+-- ScreenGui
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "SyruCustomGUI"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = PlayerGui
 
--- Draggable Logo Button
+-- Draggable Logo
 local LogoButton = Instance.new("ImageButton")
 LogoButton.Name = "LogoButton"
 LogoButton.Parent = ScreenGui
 LogoButton.Size = UDim2.new(0, 100, 0, 100)
 LogoButton.Position = UDim2.new(0.05, 0, 0.05, 0)
-LogoButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147) -- dark pink
-LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0) -- black border
+LogoButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147) -- Dark Pink
+LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0) -- Black border
 LogoButton.BorderSizePixel = 3
-LogoButton.Image = ""
+LogoButton.Image = "" -- Empty if just color
 
--- Draggable logic
+-- Dragging Logic
 local dragging, dragInput, dragStart, startPos
 local function update(input)
     local delta = input.Position - dragStart
@@ -105,7 +68,7 @@ Window.BorderSizePixel = 0
 Window.Visible = false
 Window.Parent = ScreenGui
 
--- Click logo to toggle UI
+-- Click Logo to Toggle Window
 LogoButton.MouseButton1Click:Connect(function()
     Window.Visible = not Window.Visible
 end)
@@ -237,5 +200,4 @@ UserInputService.InputChanged:Connect(function(input)
         SliderLabel.Text = string.format("Walk Speed: %.0f", newSpeed)
     end
 end)
-
-fadeOutLoadingScreen(loadingScreen)
+]])()
