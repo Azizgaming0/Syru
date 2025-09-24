@@ -13,14 +13,14 @@ ScreenGui.Parent = PlayerGui
 local LogoButton = Instance.new("ImageButton")
 LogoButton.Name = "LogoButton"
 LogoButton.Parent = ScreenGui
-LogoButton.Size = UDim2.new(0, 100, 0, 100)
+LogoButton.Size = UDim2.new(0, 50, 0, 50) -- smaller logo
 LogoButton.Position = UDim2.new(0.05, 0, 0.05, 0)
 LogoButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147)
 LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 LogoButton.BorderSizePixel = 3
 LogoButton.Image = "https://raw.githubusercontent.com/Azizgaming0/Logo/main/Gemini_Generated_Image_thn6svthn6svthn6.png"
 
--- Drag logic
+-- Dragging Logic
 local dragging, dragInput, dragStart, startPos
 local function update(input)
     local delta = input.Position - dragStart
@@ -60,7 +60,7 @@ end)
 -- Main Window
 local Window = Instance.new("Frame")
 Window.Name = "MainWindow"
-Window.Size = UDim2.new(0.4, 0, 0.6, 0)
+Window.Size = UDim2.new(0.35, 0, 0.6, 0)
 Window.Position = UDim2.new(0.5, 0, 0.5, 0)
 Window.AnchorPoint = Vector2.new(0.5, 0.5)
 Window.BackgroundColor3 = Color3.fromRGB(40, 44, 52)
@@ -68,8 +68,14 @@ Window.BorderSizePixel = 0
 Window.Visible = false
 Window.Parent = ScreenGui
 
+-- Click Logo to Toggle Window
+LogoButton.MouseButton1Click:Connect(function()
+    Window.Visible = not Window.Visible
+end)
+
 -- Title
 local Title = Instance.new("TextLabel")
+Title.Name = "Title"
 Title.Size = UDim2.new(1, 0, 0, 40)
 Title.Position = UDim2.new(0, 0, 0, 0)
 Title.Text = "Syru Hub"
@@ -94,51 +100,36 @@ CloseButton.MouseButton1Click:Connect(function()
     Window.Visible = false
 end)
 
--- Toggle Window with Logo
-LogoButton.MouseButton1Click:Connect(function()
-    Window.Visible = not Window.Visible
-end)
+-- Main Tab Frame
+local MainTab = Instance.new("Frame")
+MainTab.Size = UDim2.new(1, -20, 0.85, 0)
+MainTab.Position = UDim2.new(0.5, 0, 0.55, 0)
+MainTab.AnchorPoint = Vector2.new(0.5, 0.5)
+MainTab.BackgroundColor3 = Color3.fromRGB(50, 54, 62)
+MainTab.Parent = Window
 
--- Tabs Frame
-local TabsFrame = Instance.new("Frame")
-TabsFrame.Size = UDim2.new(0, 120, 1, -40)
-TabsFrame.Position = UDim2.new(0, 0, 0, 40)
-TabsFrame.BackgroundColor3 = Color3.fromRGB(30, 34, 42)
-TabsFrame.Parent = Window
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Padding = UDim.new(0, 5)
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Parent = MainTab
 
-local TabsLayout = Instance.new("UIListLayout")
-TabsLayout.Padding = UDim.new(0, 5)
-TabsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-TabsLayout.Parent = TabsFrame
-
--- Content Frame
-local ContentFrame = Instance.new("Frame")
-ContentFrame.Size = UDim2.new(1, -120, 1, -40)
-ContentFrame.Position = UDim2.new(0, 120, 0, 40)
-ContentFrame.BackgroundColor3 = Color3.fromRGB(50, 54, 62)
-ContentFrame.Parent = Window
-
-local UIListLayoutContent = Instance.new("UIListLayout")
-UIListLayoutContent.Padding = UDim.new(0, 5)
-UIListLayoutContent.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayoutContent.Parent = ContentFrame
-
--- Infinite Jump Button
-local InfiniteJumpBtn = Instance.new("TextButton")
-InfiniteJumpBtn.Size = UDim2.new(1, -10, 0, 40)
-InfiniteJumpBtn.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
-InfiniteJumpBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-InfiniteJumpBtn.Text = "Infinite Jump: OFF"
-InfiniteJumpBtn.Parent = ContentFrame
+-- Infinite Jump Toggle
+local InfiniteJumpToggle = Instance.new("TextButton")
+InfiniteJumpToggle.Size = UDim2.new(1, 0, 0, 40)
+InfiniteJumpToggle.Text = "Infinite Jump: OFF"
+InfiniteJumpToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+InfiniteJumpToggle.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+InfiniteJumpToggle.Parent = MainTab
+InfiniteJumpToggle.LayoutOrder = 1
 
 local infiniteJumpEnabled = false
 local jumpConnection
 
-InfiniteJumpBtn.MouseButton1Click:Connect(function()
+InfiniteJumpToggle.MouseButton1Click:Connect(function()
     infiniteJumpEnabled = not infiniteJumpEnabled
     if infiniteJumpEnabled then
-        InfiniteJumpBtn.Text = "Infinite Jump: ON"
-        InfiniteJumpBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+        InfiniteJumpToggle.Text = "Infinite Jump: ON"
+        InfiniteJumpToggle.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
         jumpConnection = UserInputService.JumpRequest:Connect(function()
             local char = Player.Character
             if char then
@@ -149,8 +140,8 @@ InfiniteJumpBtn.MouseButton1Click:Connect(function()
             end
         end)
     else
-        InfiniteJumpBtn.Text = "Infinite Jump: OFF"
-        InfiniteJumpBtn.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
+        InfiniteJumpToggle.Text = "Infinite Jump: OFF"
+        InfiniteJumpToggle.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
         if jumpConnection then
             jumpConnection:Disconnect()
             jumpConnection = nil
@@ -160,35 +151,36 @@ end)
 
 -- Walk Speed Slider
 local WalkSpeedSlider = Instance.new("Frame")
-WalkSpeedSlider.Size = UDim2.new(1, -10, 0, 30)
+WalkSpeedSlider.Size = UDim2.new(1, 0, 0, 20)
 WalkSpeedSlider.BackgroundColor3 = Color3.fromRGB(60, 64, 72)
-WalkSpeedSlider.Parent = ContentFrame
+WalkSpeedSlider.Parent = MainTab
+WalkSpeedSlider.LayoutOrder = 2
+
+local SliderKnob = Instance.new("TextButton") -- Changed to TextButton so MouseButton1Down works
+SliderKnob.Size = UDim2.new(0.1, 0, 1.2, 0)
+SliderKnob.Position = UDim2.new(0, 0, 0, 0)
+SliderKnob.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+SliderKnob.Text = ""
+SliderKnob.Parent = WalkSpeedSlider
 
 local SliderLabel = Instance.new("TextLabel")
-SliderLabel.Size = UDim2.new(1, 0, 0, 20)
-SliderLabel.Position = UDim2.new(0, 0, 0, -20)
+SliderLabel.Size = UDim2.new(1, 0, 0.5, 0)
+SliderLabel.Position = UDim2.new(0, 0, -1.5, 0)
 SliderLabel.Text = "Walk Speed: 20"
 SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 SliderLabel.BackgroundTransparency = 1
 SliderLabel.Parent = WalkSpeedSlider
-
-local SliderKnob = Instance.new("TextButton")
-SliderKnob.Size = UDim2.new(0.1, 0, 1, 0)
-SliderKnob.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
-SliderKnob.Text = ""
-SliderKnob.Parent = WalkSpeedSlider
 
 local isDragging = false
 local maxSpeed = 5000
 
 SliderKnob.MouseButton1Down:Connect(function()
     isDragging = true
-end)
-
-UserInputService.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        isDragging = false
-    end
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            isDragging = false
+        end
+    end)
 end)
 
 UserInputService.InputChanged:Connect(function(input)
@@ -196,9 +188,12 @@ UserInputService.InputChanged:Connect(function(input)
         local mousePos = input.Position.X
         local sliderPos = WalkSpeedSlider.AbsolutePosition.X
         local sliderSize = WalkSpeedSlider.AbsoluteSize.X
-        local newX = math.clamp((mousePos - sliderPos)/sliderSize, 0, 1)
+        
+        local newX = math.clamp((mousePos - sliderPos) / sliderSize, 0, 1)
         SliderKnob.Position = UDim2.new(newX, 0, 0, 0)
-        local newSpeed = 20 + newX*(maxSpeed-20)
+        
+        local newSpeed = 20 + newX * (maxSpeed - 20)
+        
         local char = Player.Character
         if char and char:FindFirstChildOfClass("Humanoid") then
             char.Humanoid.WalkSpeed = newSpeed
