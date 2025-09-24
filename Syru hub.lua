@@ -56,8 +56,7 @@ LogoButton.Position = UDim2.new(0.05, 0, 0.05, 0)
 LogoButton.BackgroundColor3 = Color3.fromRGB(255, 20, 147)
 LogoButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 LogoButton.BorderSizePixel = 3
--- NOTE: Please replace this with your own image's Asset ID after uploading it to Roblox.
-LogoButton.Image = "https://raw.githubusercontent.com/Azizgaming0/Logo/main/Gemini_Generated_Image_thn6svthn6svthn6.png"
+LogoButton.Image = "rbxassetid://1356586365197"
 
 local UICorner_Logo = Instance.new("UICorner")
 UICorner_Logo.CornerRadius = UDim.new(0.5, 0)
