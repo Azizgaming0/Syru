@@ -12,17 +12,17 @@ local Window = OrionLib:MakeWindow({
     IntroIcon = "rbxassetid://4483345998"
 })
 
--- Initial notification with Discord link
+-- Initial notification
 OrionLib:MakeNotification({
     Name = "Welcome!",
-    Content = "Join the discord server, get key from #key",
+    Content = "Join the discord and, get key from #Key!",
     Image = "rbxassetid://4483345998",
     Time = 7
 })
 
 -- Key system
 local Verified = OrionLib:LoadConfig("Verified") or false
-local VALID_KEYS = {"SYRUKEY123", "HUBKEY2025", "JOINEDDISC"} -- Edit these (post in Discord)
+local VALID_KEYS = {"JOINEDDISC"} -- Edit these (post in Discord)
 
 local function CheckKey(key)
     for _, valid in pairs(VALID_KEYS) do
@@ -47,7 +47,7 @@ local function LockFeature(callback)
     else
         OrionLib:MakeNotification({
             Name = "Locked",
-            Content = "Enter key in Misc tab! Get it from https://discord.gg/UXMRpQHnwG",
+            Content = "Enter key in Discord tab! Get it from #verify!",
             Image = "rbxassetid://4483345998",
             Time = 5
         })
@@ -97,40 +97,19 @@ MainTab:AddToggle({
     Color = Color3.fromRGB(255, 105, 180)
 })
 
--- Misc Tab
-local MiscTab = Window:MakeTab({
-    Name = "Misc",
+-- Discord Tab
+local DiscordTab = Window:MakeTab({
+    Name = "Discord",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
-local MiscSection = MiscTab:AddSection({
-    Name = "Utility Features"
+local DiscordSection = DiscordTab:AddSection({
+    Name = "Verification"
 })
 
-MiscTab:AddTextbox({
-    Name = "Enter Key",
-    Default = "",
-    TextDisappear = true,
-    PlaceholderText = "Paste key from Discord (e.g., SYRUKEY123)",
-    Callback = function(Text)
-        if CheckKey(Text) then
-            MiscTab:AddLabel("Status: Verified ✅")
-        else
-            OrionLib:MakeNotification({
-                Name = "Invalid Key",
-                Content = "Get key from https://discord.gg/UXMRpQHnwG #verify channel",
-                Image = "rbxassetid://4483345998",
-                Time = 5
-            })
-            MiscTab:AddLabel("Status: Not Verified ❌")
-        end
-    end,
-    Color = Color3.fromRGB(255, 105, 180)
-})
-
-MiscTab:AddButton({
-    Name = "Join Discord for Key",
+DiscordTab:AddButton({
+    Name = "Get Key",
     Callback = function()
         OrionLib:MakeNotification({
             Name = "Join Discord",
@@ -142,7 +121,28 @@ MiscTab:AddButton({
     Color = Color3.fromRGB(255, 105, 180)
 })
 
-MiscTab:AddLabel("Status: " .. (Verified and "Verified ✅" or "Not Verified ❌"))
+DiscordTab:AddTextbox({
+    Name = "Put Key",
+    Default = "",
+    TextDisappear = true,
+    PlaceholderText = "Paste key (e.g., SYRUKEY123)",
+    Callback = function(Text)
+        if CheckKey(Text) then
+            DiscordTab:AddLabel("Status: Verified ✅")
+        else
+            OrionLib:MakeNotification({
+                Name = "Invalid Key",
+                Content = "Get key from https://discord.gg/UXMRpQHnwG #verify!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+            DiscordTab:AddLabel("Status: Not Verified ❌")
+        end
+    end,
+    Color = Color3.fromRGB(255, 105, 180)
+})
+
+DiscordTab:AddLabel("Status: " .. (Verified and "Verified ✅" or "Not Verified ❌"))
 
 -- Fly Script
 local Players = game:GetService("Players")
@@ -239,7 +239,7 @@ UserInputService.TouchEnded:Connect(function(input)
     end
 end)
 
-MiscTab:AddToggle({
+MainTab:AddToggle({
     Name = "Fly",
     Default = false,
     Callback = function(Value)
@@ -255,7 +255,7 @@ MiscTab:AddToggle({
     Color = Color3.fromRGB(255, 105, 180)
 })
 
-MiscTab:AddSlider({
+MainTab:AddSlider({
     Name = "Fly Speed",
     Min = 10,
     Max = 100,
@@ -271,7 +271,7 @@ MiscTab:AddSlider({
     end
 })
 
-MiscTab:AddToggle({
+MainTab:AddToggle({
     Name = "Sample Toggle",
     Default = false,
     Callback = function(Value)
@@ -282,7 +282,7 @@ MiscTab:AddToggle({
     Color = Color3.fromRGB(255, 105, 180)
 })
 
-MiscTab:AddColorpicker({
+MainTab:AddColorpicker({
     Name = "Colorpicker",
     Default = Color3.fromRGB(255, 105, 180),
     Callback = function(Value)
@@ -292,7 +292,7 @@ MiscTab:AddColorpicker({
     end
 })
 
-MiscTab:AddSlider({
+MainTab:AddSlider({
     Name = "Speed",
     Min = 0,
     Max = 120,
