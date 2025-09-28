@@ -22,7 +22,7 @@ OrionLib:MakeNotification({
 
 -- Key system
 local Verified = OrionLib:LoadConfig("Verified") or false
-local VALID_KEYS = {"SYRUKEY123", "HUBKEY2025", "JOINEDDISC"} -- Edit these (post in Discord)
+local VALID_KEYS = {"JOINEDDISC"} -- Edit these (post in Discord)
 local DISCORD_LINK = "https://discord.gg/UXMRpQHnwG"
 
 local function CheckKey(key)
