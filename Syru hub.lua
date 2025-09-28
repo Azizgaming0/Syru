@@ -15,7 +15,7 @@ local Window = OrionLib:MakeWindow({
 -- Initial notification with Discord link
 OrionLib:MakeNotification({
     Name = "Welcome!",
-    Content = "Join https://discord.gg/UXMRpQHnwG, get key from #verify channel!",
+    Content = "Join the discord server, get key from #key",
     Image = "rbxassetid://4483345998",
     Time = 7
 })
