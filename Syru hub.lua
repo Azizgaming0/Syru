@@ -15,14 +15,15 @@ local Window = OrionLib:MakeWindow({
 -- Initial notification
 OrionLib:MakeNotification({
     Name = "Welcome!",
-    Content = "Join the discord and, get key from #Key!",
+    Content = "Join https://discord.gg/UXMRpQHnwG, get key from #verify!",
     Image = "rbxassetid://4483345998",
     Time = 7
 })
 
 -- Key system
 local Verified = OrionLib:LoadConfig("Verified") or false
-local VALID_KEYS = {"JOINEDDISC"} -- Edit these (post in Discord)
+local VALID_KEYS = {"SYRUKEY123", "HUBKEY2025", "JOINEDDISC"} -- Edit these (post in Discord)
+local DISCORD_LINK = "https://discord.gg/UXMRpQHnwG"
 
 local function CheckKey(key)
     for _, valid in pairs(VALID_KEYS) do
@@ -105,15 +106,16 @@ local DiscordTab = Window:MakeTab({
 })
 
 local DiscordSection = DiscordTab:AddSection({
-    Name = "Verification"
+    Name = "Key Verification"
 })
 
 DiscordTab:AddButton({
     Name = "Get Key",
     Callback = function()
+        setclipboard(DISCORD_LINK) -- Copies Discord link
         OrionLib:MakeNotification({
-            Name = "Join Discord",
-            Content = "Visit https://discord.gg/UXMRpQHnwG, check #verify for key!",
+            Name = "Link Copied!",
+            Content = "Paste https://discord.gg/UXMRpQHnwG in browser, get key from #verify!",
             Image = "rbxassetid://4483345998",
             Time = 7
         })
